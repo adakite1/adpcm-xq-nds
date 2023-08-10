@@ -145,7 +145,7 @@ static double minimum_error (const struct adpcm_channel *pchan, int nch, int32_t
     else
         chan.pcmdata += trial_delta;
 
-    CLIP(chan.pcmdata, -32768, 32767);
+    CLIP(chan.pcmdata, -32767, 32767);
     if (best_nibble) *best_nibble = nibble;
     min_error = (double) (chan.pcmdata - csample) * (chan.pcmdata - csample);
 
@@ -175,7 +175,7 @@ static double minimum_error (const struct adpcm_channel *pchan, int nch, int32_t
         else
             chan.pcmdata += trial_delta;
 
-        CLIP(chan.pcmdata, -32768, 32767);
+        CLIP(chan.pcmdata, -32767, 32767);
 
         error = (double) (chan.pcmdata - csample) * (chan.pcmdata - csample);
 
@@ -243,7 +243,7 @@ static uint8_t encode_sample (struct adpcm_context *pcnxt, int ch, const int16_t
 
     pchan->index += index_table[nibble & 0x07];
     CLIP(pchan->index, 0, 88);
-    CLIP(pchan->pcmdata, -32768, 32767);
+    CLIP(pchan->pcmdata, -32767, 32767);
 
     if (pcnxt->noise_shaping)
         pchan->error += pchan->pcmdata;
@@ -382,7 +382,7 @@ int adpcm_decode_block (int16_t *outbuf, const uint8_t *inbuf, size_t inbufsize,
 
                 index[ch] += index_table [*inbuf & 0x7];
                 CLIP(index[ch], 0, 88);
-                CLIP(pcmdata[ch], -32768, 32767);
+                CLIP(pcmdata[ch], -32767, 32767);
                 outbuf [i * 2 * channels] = pcmdata[ch];
 
                 step = step_table [index [ch]]; delta = step >> 3;
@@ -398,7 +398,7 @@ int adpcm_decode_block (int16_t *outbuf, const uint8_t *inbuf, size_t inbufsize,
                 
                 index[ch] += index_table [(*inbuf >> 4) & 0x7];
                 CLIP(index[ch], 0, 88);
-                CLIP(pcmdata[ch], -32768, 32767);
+                CLIP(pcmdata[ch], -32767, 32767);
                 outbuf [(i * 2 + 1) * channels] = pcmdata[ch];
 
                 inbuf++;
