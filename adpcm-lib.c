@@ -364,8 +364,8 @@ int adpcm_encode_block_force_equal_init (void *p, uint8_t *outbuf, size_t *outbu
         *outbufsize += 4;
     }
 
-    // set_decode_parameters(pcnxt, init_pcmdata, init_index);
     encode_chunks (pcnxt, &outbuf, outbufsize, &inbuf, inbufcount);
+    set_decode_parameters(pcnxt, init_pcmdata, init_index);
 
     return 1;
 }
