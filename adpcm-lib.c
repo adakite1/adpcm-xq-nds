@@ -324,52 +324,6 @@ int adpcm_encode_block (void *p, uint8_t *outbuf, size_t *outbufsize, const int1
     return 1;
 }
 
-/* Encode a block of 16-bit PCM data into 4-bit ADPCM while forcing the block's init values to be the same as previous blocks.
- *
- * Parameters:
- *  p               the context returned by adpcm_begin()
- *  outbuf          destination buffer
- *  outbufsize      pointer to variable where the number of bytes written
- *                   will be stored
- *  inbuf           source PCM samples
- *  inbufcount      number of composite PCM samples provided (note: this is
- *                   the total number of 16-bit samples divided by the number
- *                   of channels)
- *
- * Returns 1 (for success as there is no error checking)
- */
-
-int adpcm_encode_block_force_equal_init (void *p, uint8_t *outbuf, size_t *outbufsize, const int16_t *inbuf, int inbufcount)
-{
-    struct adpcm_context *pcnxt = (struct adpcm_context *) p;
-    int32_t init_pcmdata[2];
-    int8_t init_index[2];
-    int ch;
-
-    *outbufsize = 0;
-
-    if (!inbufcount)
-        return 1;
-
-    get_decode_parameters(pcnxt, init_pcmdata, init_index);
-
-    for (ch = 0; ch < pcnxt->num_channels; ch++) {
-        // init_pcmdata[ch] = *inbuf++;
-        outbuf[0] = init_pcmdata[ch];
-        outbuf[1] = init_pcmdata[ch] >> 8;
-        outbuf[2] = init_index[ch];
-        outbuf[3] = 0;
-
-        outbuf += 4;
-        *outbufsize += 4;
-    }
-
-    encode_chunks (pcnxt, &outbuf, outbufsize, &inbuf, inbufcount);
-    set_decode_parameters(pcnxt, init_pcmdata, init_index);
-
-    return 1;
-}
-
 /********************************* 4-bit ADPCM decoder ********************************/
 
 /* Decode the block of ADPCM data into PCM. This requires no context because ADPCM blocks
