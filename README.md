@@ -1,3 +1,25 @@
+## ADPCM-XQ-NDS
+
+The NDS contains a built-in ADPCM decoder.
+However discussing the encoder architecture with Psy_Commando and reviewing notes on
+the subject created by martin korth here http://problemkaputt.de/gbatek-ds-sound-notes.htm,
+revealed that there appears to be a slight discrepancy between the standard IMA suggested
+implementation and the actual implementation: this fork of ADPCM-XQ
+seeks to solve that with an encoder dedicated to NDS audio.
+
+During the step where the difference is added to the running prediction,
+there is the possibility of the final sample value falling outside of the range
+of a 16-bit signed integer, and so the NDS, like the reference implementation, 
+handles this by clipping the final sample value to a good range. However this
+range is different between the IMA reference and the NDS implementation. While
+the reference clips the value to [-32768, 32767], utilizing the entire range of
+the 16-bit signed int, the NDS decoder instead clips to [-32767, 32767],
+preferring the symmetry.
+ADPCM is cumulative, so this can lead to unexpected results. The main change
+here is to modify this clipping to match that of the NDS.
+
+Below is the original README for ADPCM-XQ:
+
 ## ADPCM-XQ
 
 Xtreme Quality ADPCM Encoder/Decoder
