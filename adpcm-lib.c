@@ -260,7 +260,7 @@ static rms_error_t min_error_4bit (const struct adpcm_channel *pchan, int nch, i
     else
         chan.pcmdata += trial_delta;
 
-    CLIP(chan.pcmdata, -32768, 32767);
+    CLIP(chan.pcmdata, -32767, 32767);
     if (best_nibble) *best_nibble = nibble;
     min_error = (rms_error_t) (chan.pcmdata - csample) * (chan.pcmdata - csample);
 
@@ -313,7 +313,7 @@ static rms_error_t min_error_4bit (const struct adpcm_channel *pchan, int nch, i
             else
                 chan.pcmdata += trial_delta;
 
-            CLIP(chan.pcmdata, -32768, 32767);
+            CLIP(chan.pcmdata, -32767, 32767);
 
             error = (rms_error_t) (chan.pcmdata - csample) * (chan.pcmdata - csample);
             threshold = max_error < min_error ? max_error : min_error;
@@ -363,7 +363,7 @@ static rms_error_t min_error_2bit (const struct adpcm_channel *pchan, int nch, i
     else
         chan.pcmdata += step * ((nibble = delta >= step)) + (step >> 1);
 
-    CLIP(chan.pcmdata, -32768, 32767);
+    CLIP(chan.pcmdata, -32767, 32767);
     if (best_nibble) *best_nibble = nibble;
     min_error = (rms_error_t) (chan.pcmdata - csample) * (chan.pcmdata - csample);
 
@@ -405,7 +405,7 @@ static rms_error_t min_error_2bit (const struct adpcm_channel *pchan, int nch, i
         else
             chan.pcmdata += step * (testnbl & 1) + (step >> 1);
 
-        CLIP(chan.pcmdata, -32768, 32767);
+        CLIP(chan.pcmdata, -32767, 32767);
 
         error = (rms_error_t) (chan.pcmdata - csample) * (chan.pcmdata - csample);
         threshold = max_error < min_error ? max_error : min_error;
@@ -459,7 +459,7 @@ static rms_error_t min_error_3bit (const struct adpcm_channel *pchan, int nch, i
     else
         chan.pcmdata += trial_delta;
 
-    CLIP(chan.pcmdata, -32768, 32767);
+    CLIP(chan.pcmdata, -32767, 32767);
     if (best_nibble) *best_nibble = nibble;
     min_error = (rms_error_t) (chan.pcmdata - csample) * (chan.pcmdata - csample);
 
@@ -511,7 +511,7 @@ static rms_error_t min_error_3bit (const struct adpcm_channel *pchan, int nch, i
             else
                 chan.pcmdata += trial_delta;
 
-            CLIP(chan.pcmdata, -32768, 32767);
+            CLIP(chan.pcmdata, -32767, 32767);
             error = (rms_error_t) (chan.pcmdata - csample) * (chan.pcmdata - csample);
             threshold = max_error < min_error ? max_error : min_error;
 
@@ -568,7 +568,7 @@ static rms_error_t min_error_5bit (const struct adpcm_channel *pchan, int nch, i
     else
         chan.pcmdata += trial_delta;
 
-    CLIP(chan.pcmdata, -32768, 32767);
+    CLIP(chan.pcmdata, -32767, 32767);
     if (best_nibble) *best_nibble = nibble;
     min_error = (rms_error_t) (chan.pcmdata - csample) * (chan.pcmdata - csample);
 
@@ -622,7 +622,7 @@ static rms_error_t min_error_5bit (const struct adpcm_channel *pchan, int nch, i
             else
                 chan.pcmdata += trial_delta;
 
-            CLIP(chan.pcmdata, -32768, 32767);
+            CLIP(chan.pcmdata, -32767, 32767);
 
             error = (rms_error_t) (chan.pcmdata - csample) * (chan.pcmdata - csample);
             threshold = max_error < min_error ? max_error : min_error;
@@ -719,7 +719,7 @@ static uint8_t encode_sample (struct adpcm_context *pcnxt, int ch, int bps, cons
     }
 
     CLIP(pchan->index, 0, 88);
-    CLIP(pchan->pcmdata, -32768, 32767);
+    CLIP(pchan->pcmdata, -32767, 32767);
 
     if (flags & NOISE_SHAPING_ENABLED)
         pchan->error += pchan->pcmdata;
@@ -957,7 +957,7 @@ int adpcm_decode_block (int16_t *outbuf, const uint8_t *inbuf, size_t inbufsize,
 
                 index[ch] += index_table [*inbuf & 0x7];
                 CLIP(index[ch], 0, 88);
-                CLIP(pcmdata[ch], -32768, 32767);
+                CLIP(pcmdata[ch], -32767, 32767);
                 outbuf [i * 2 * channels] = pcmdata[ch];
 
                 step = step_table [index [ch]]; delta = step >> 3;
@@ -973,7 +973,7 @@ int adpcm_decode_block (int16_t *outbuf, const uint8_t *inbuf, size_t inbufsize,
                 
                 index[ch] += index_table [(*inbuf >> 4) & 0x7];
                 CLIP(index[ch], 0, 88);
-                CLIP(pcmdata[ch], -32768, 32767);
+                CLIP(pcmdata[ch], -32767, 32767);
                 outbuf [(i * 2 + 1) * channels] = pcmdata[ch];
 
                 inbuf++;
@@ -1055,7 +1055,7 @@ int adpcm_decode_block_ex (int16_t *outbuf, const uint8_t *inbuf, size_t inbufsi
                     numbits -= bps;
 
                     CLIP(index[ch], 0, 88);
-                    CLIP(pcmdata[ch], -32768, 32767);
+                    CLIP(pcmdata[ch], -32767, 32767);
                     outbuf [i * channels + ch] = pcmdata[ch];
                 }
             }
@@ -1088,7 +1088,7 @@ int adpcm_decode_block_ex (int16_t *outbuf, const uint8_t *inbuf, size_t inbufsi
                     numbits -= bps;
 
                     CLIP(index[ch], 0, 88);
-                    CLIP(pcmdata[ch], -32768, 32767);
+                    CLIP(pcmdata[ch], -32767, 32767);
                     outbuf [i * channels + ch] = pcmdata[ch];
                 }
             }
@@ -1123,7 +1123,7 @@ int adpcm_decode_block_ex (int16_t *outbuf, const uint8_t *inbuf, size_t inbufsi
                     numbits -= bps;
 
                     CLIP(index[ch], 0, 88);
-                    CLIP(pcmdata[ch], -32768, 32767);
+                    CLIP(pcmdata[ch], -32767, 32767);
                     outbuf [i * channels + ch] = pcmdata[ch];
                 }
             }
